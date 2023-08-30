@@ -10,6 +10,10 @@
         textColor: {
             type: String,
             default: "black"
+        },
+        aiEnabled: {
+            type: Boolean,
+            default: false
         }
     })
 
@@ -453,7 +457,7 @@
             <button title="Table" :class="editor.isActive('table') ? 'floatingMenuButtonActive' : 'floatingMenuButton'" @click="insertTable">
                 <Icon name="material-symbols:data-table" class="regularIcon"/>
             </button>
-            <button title="Ai" :class="aiSectionOpen ? 'floatingMenuButtonActive' : 'floatingMenuButton'" @click="toggleAiSection">
+            <button title="Ai"  v-if="aiEnabled" :class="aiSectionOpen ? 'floatingMenuButtonActive' : 'floatingMenuButton'" @click="toggleAiSection">
                 <Icon name="material-symbols:network-intelligence" class="regularIcon"/>
             </button>
         </div>

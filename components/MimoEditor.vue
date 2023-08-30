@@ -193,10 +193,10 @@
 
 <template>
     <floating-menu :editor="editor" v-if="editor">
-        <MimoFloatingMenu :editor="editor" textColor="black"/>
+        <MimoFloatingMenu :editor="editor" textColor="black" :aiEnabled="aiEnabled"/>
     </floating-menu>
     <bubble-menu :editor="editor" v-if="editor">
-        <MimoFloatingMenu :editor="editor" textColor="black"/>
+        <MimoFloatingMenu :editor="editor" textColor="black" :aiEnabled="aiEnabled"/>
     </bubble-menu>
     <editor-content :editor="editor" contenteditable="false"/>
 </template>
