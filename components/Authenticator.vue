@@ -135,6 +135,7 @@
                 router.push('/dashboard')
 
                 props.backToDashboard()
+                props.initFunction()
             }
         } catch (error: any) {
             alert(error.error_description || error.message)
