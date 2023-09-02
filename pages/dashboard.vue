@@ -23,14 +23,18 @@
     const editor = ref<Editor | null>(null)
     const editorRef = ref<HTMLDivElement | null>(null)
 
+    const route = useRoute()
+    const queryMode = ref(route.query.mode as string)
+
     onMounted(async () => {
         user = useSupabaseUser()
         pageList = ref([] as any[])
 
-        if (user.value)
+        if (user.value) {
             setTimeout(() => {
                 init()
             }, 100)
+        }
     })
 
     const resetData = () => {
@@ -41,6 +45,8 @@
         pageSelection.value = ''
 
         pageList.value = []
+
+        queryMode.value = route.query.mode as string
     }
 
     const init = async () => {
@@ -224,6 +230,10 @@
         downloadInnerHtml(`${pageName.value}.doc`)
     }
 
+    const changePassword = () => {
+        queryMode.value = 'resetPassword'
+    }
+
     useHead({
         title: "Dashboard - MIMO - The Ultimate Online Text Editor",
         meta: [
@@ -241,47 +251,55 @@
 
 <template>
     <div v-if="user" id="dashboard">
-        <HeroImage :src="heroSrc" alt="MIMO HERO" class="border" v-if="!dashboardLoading" id="dashHero"/>
-        <div v-else class="loadingPopupWrapper">
-            <LoadingAnimation class="loadingPopup"/>
-        </div>
-        <Panel class="accountPanel">
-            <div class="loginField">
-                <span class="loginFieldText">Wallpaper: </span>
-                <input type="text" v-model="heroSrc">
+        <div v-if="queryMode !== 'resetPassword'">
+            <HeroImage :src="heroSrc" alt="MIMO HERO" class="border" v-if="!dashboardLoading" id="dashHero"/>
+            <div v-else class="loadingPopupWrapper">
+                <LoadingAnimation class="loadingPopup"/>
             </div>
-            <div class="loginField">
-                <span>Title: </span>
-                <input type="text" v-model="pageName">
-            </div>
-            <div class="loginField">
-                <span class="loginFieldText">Document: </span>
-                <select @change="pageSelectorChange" v-model="pageSelection" ref="pageSelectionRef" :editor="(editor as Editor)">
-                    <option v-for="page in pageList" :value="page.pageID">{{page.pageName}}</option>
-                </select>
-                <div class="pageControls">
-                    <button @click="newPage" class="borderlessButton">
-                        <Icon name="material-symbols:add" size="20px"/>
+            <Panel class="accountPanel">
+                <div class="loginField">
+                    <span class="loginFieldText">Wallpaper: </span>
+                    <input type="text" v-model="heroSrc">
+                </div>
+                <div class="loginField">
+                    <span>Title: </span>
+                    <input type="text" v-model="pageName">
+                </div>
+                <div class="loginField">
+                    <span class="loginFieldText">Document: </span>
+                    <select @change="pageSelectorChange" v-model="pageSelection" ref="pageSelectionRef" :editor="(editor as Editor)">
+                        <option v-for="page in pageList" :value="page.pageID">{{page.pageName}}</option>
+                    </select>
+                    <div class="pageControls">
+                        <button @click="newPage" class="borderlessButton">
+                            <Icon name="material-symbols:add" size="20px"/>
+                        </button>
+                        <button @click="deletePage" class="borderlessButton">
+                            <Icon name="material-symbols:delete" size="20px"/>
+                        </button>
+                    </div>
+                </div>
+                <div class="dashMenu">
+                    <button @click="print" class="borderlessButton">
+                        <Icon name="material-symbols:download" size="20px"/>
                     </button>
-                    <button @click="deletePage" class="borderlessButton">
-                        <Icon name="material-symbols:delete" size="20px"/>
+                    <button @click="changePassword" class="borderlessButton">
+                        <Icon name="material-symbols:lock" size="20px"/>
+                    </button>
+                    <button @click="signOut" class="borderlessButton">
+                        <Icon name="material-symbols:logout" size="20px"/>
                     </button>
                 </div>
-            </div>
-            <div class="dashMenu">
-                <button @click="print" class="borderlessButton">
-                    <Icon name="material-symbols:download" size="20px"/>
-                </button>
-                <button @click="signOut" class="borderlessButton">
-                    <Icon name="material-symbols:logout" size="20px"/>
-                </button>
-            </div>
-        </Panel>
-        <Panel class="mainPanel">
-            <Container class="container">
-                <MimoEditor aiEnabled @update:content="(content) => pageContent = content" v-if="!loadingNewPage" :content="pageContent" @editorCallback="(edit) => editor = edit" ref="editorRef"/>
-            </Container>
-        </Panel>
+            </Panel>
+            <Panel class="mainPanel">
+                <Container class="container">
+                    <MimoEditor aiEnabled @update:content="(content) => pageContent = content" v-if="!loadingNewPage" :content="pageContent" @editorCallback="(edit) => editor = edit" ref="editorRef"/>
+                </Container>
+            </Panel>
+        </div>
+        <div v-else>
+            <Authenticator :initFunction="init" mode="resetPassword" :backToDashboard="() => queryMode = ''"/>
+        </div>
     </div>
     <div v-else class="authContainer">
         <Authenticator :initFunction="init"/>
