@@ -134,6 +134,7 @@
                 let router = useRouter()
                 router.push('/dashboard')
 
+                window.location.reload()
                 props.backToDashboard()
                 props.initFunction()
             }

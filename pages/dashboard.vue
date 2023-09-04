@@ -247,6 +247,10 @@
             }
         ]
     })
+
+    const share = () => {
+        
+    }
 </script>
 
 <template>
@@ -280,6 +284,9 @@
                     </div>
                 </div>
                 <div class="dashMenu">
+                    <button @click="share" class="borderlessButton">
+                        <Icon name="material-symbols:ios-share" size="20px"/>
+                    </button>
                     <button @click="print" class="borderlessButton">
                         <Icon name="material-symbols:download" size="20px"/>
                     </button>
