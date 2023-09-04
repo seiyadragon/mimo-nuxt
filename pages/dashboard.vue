@@ -26,6 +26,8 @@
     const route = useRoute()
     const queryMode = ref(route.query.mode as string)
 
+    const sharePage = ref(false)
+
     onMounted(async () => {
         user = useSupabaseUser()
         pageList = ref([] as any[])
@@ -43,6 +45,7 @@
         pageContent.value = ''
         pageID.value = ''
         pageSelection.value = ''
+        sharePage.value = false
 
         pageList.value = []
 
@@ -137,6 +140,7 @@
             pageName: 'untitled',
             pageID: uuidv4().toString(),
             pageContent: '',
+            sharePage: false,
         })
 
         savePages()
@@ -154,6 +158,7 @@
             heroSrc.value = pageData.heroSrc
             pageName.value = pageData.pageName
             pageContent.value = pageData.pageContent
+            sharePage.value = pageData.sharePage
             loadingNewPage.value = true
 
             setTimeout(() => {
@@ -187,6 +192,15 @@
 
         if (pageData) {
             pageData.pageContent = newValue
+            savePages()
+        }
+    })
+
+    watch(sharePage, (newValue) => {
+        const pageData = pageList.value.find((page) => page.pageID === pageID.value)
+
+        if (pageData) {
+            pageData.sharePage = newValue
             savePages()
         }
     })
@@ -248,8 +262,40 @@
         ]
     })
 
-    const share = () => {
-        
+    const share = async () => {
+        const pageData = pageList.value.find((page) => page.pageID === pageID.value)
+
+        if (pageData) {
+            const url = `https://mimo-eight.vercel.app/post/${pageData.pageID}`
+
+            if (pageData.sharePage === undefined || pageData.sharePage === null) {
+                pageData.sharePage = false
+            } else if (pageData.sharePage == false) {
+                pageData.sharePage = true
+            } else if (pageData.sharePage == true) {
+                pageData.sharePage = false
+            }
+
+            sharePage.value = pageData.sharePage
+
+            if (pageData.sharePage) {
+                if (navigator.share) {
+                    navigator.share({
+                        title: pageData.pageName,
+                        text: pageData.pageName,
+                        url: url,
+                    })
+                    .then(() => console.log('Successful share'))
+                    .catch((error) => console.log('Error sharing', error));
+                } else {
+                    alert(`Share this link: ${url}`)
+                }
+            } else {
+                alert('Page is no longer being shared!')
+            }
+        }
+
+        savePages()
     }
 </script>
 
@@ -275,25 +321,27 @@
                         <option v-for="page in pageList" :value="page.pageID">{{page.pageName}}</option>
                     </select>
                     <div class="pageControls">
-                        <button @click="newPage" class="borderlessButton">
+                        <button title="New Page" @click="newPage" class="borderlessButton">
                             <Icon name="material-symbols:add" size="20px"/>
                         </button>
-                        <button @click="deletePage" class="borderlessButton">
+                        <button title="Remove Page" @click="deletePage" class="borderlessButton">
                             <Icon name="material-symbols:delete" size="20px"/>
                         </button>
+                        <div v-if="sharePage" title="Shared" class="colorMarkerActive"/>
+                        <div v-else title="Not Shared" class="colorMarker"/>
                     </div>
                 </div>
                 <div class="dashMenu">
-                    <button @click="share" class="borderlessButton">
-                        <Icon name="material-symbols:ios-share" size="20px"/>
+                    <button title="Share" @click="share" class="borderlessButton">
+                        <Icon name="material-symbols:share" size="20px"/>
                     </button>
-                    <button @click="print" class="borderlessButton">
+                    <button title="Export" @click="print" class="borderlessButton">
                         <Icon name="material-symbols:download" size="20px"/>
                     </button>
-                    <button @click="changePassword" class="borderlessButton">
+                    <button title="Change Password" @click="changePassword" class="borderlessButton">
                         <Icon name="material-symbols:lock" size="20px"/>
                     </button>
-                    <button @click="signOut" class="borderlessButton">
+                    <button title="Logout" @click="signOut" class="borderlessButton">
                         <Icon name="material-symbols:logout" size="20px"/>
                     </button>
                 </div>
@@ -388,25 +436,18 @@
         align-items: center
         justify-content: left
 
-    .loadingPopupWrapper
-        position: fixed
-        top: 0
-        left: 0
-        bottom: 0
-        right: 0
-        z-index: 999
-        background-color: rgba(0, 0, 0, 1)
-        display: flex
-        align-items: center
-        justify-content: center
+    .colorMarker, .colorMarkerActive
+        width: 16px
+        height: 16px
+        border-radius: 100%
+        border: 1px solid #000
+        background-color: #fff
+        color: #000
+        margin-left: 16px
+        margin-right: 16px
+        transition: all 0.3s ease-in-out
 
-    .loadingPopup
-        position: sticky
-        top: 0
-        left: 0
-        bottom: 0
-        right: 0
-        z-index: 999
-        width: 350px
-        height: 350px
+    .colorMarkerActive
+        background-color: green
+        transition: all 0.3s ease-in-out
 </style>

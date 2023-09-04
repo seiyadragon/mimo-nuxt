@@ -31,7 +31,7 @@
             <img src="/MIMO_LOGO.png" alt="Mimo Logo" width="45px" :class="darkie ? 'darkmodeImage' : ''" ref="image"/>
         </NuxtLink>
         <div class="links">
-            <NuxtLink to="try">
+            <NuxtLink to="/try">
                 <button class="navButton">Try it</button>
             </NuxtLink>
             <NuxtLink to="/dashboard">

@@ -89,6 +89,10 @@
             type: Boolean,
             default: true
         },
+        floatingMenu: {
+            type: Boolean,
+            default: true
+        },
     })
 
     const emit = defineEmits(['update:content', 'editorCallback'])
@@ -115,7 +119,15 @@
             Typography, FontFamily, CodeBlockLowlight.configure({
               lowlight,
             }),
-            Subscript, Superscript, TaskList, TaskItem, Link, Image,
+            Subscript, Superscript, TaskList, TaskItem, Link.configure({
+                HTMLAttributes: {
+                    // Change rel to different value
+                    // Allow search engines to follow links(remove nofollow)
+                    rel: 'noopener noreferrer nofollow',
+                    // Remove target entirely so links open in current tab
+                    class: 'editorLinkSelector'
+                },
+            }), Image,
             GapCursor, Dropcursor, TextAlign.configure({
               types: ['heading', 'paragraph', 'textStyle', 'link'],
             }), Table.configure({
@@ -158,6 +170,8 @@
                         editorLineNumber.value = textLines.length;
                     }
                 }
+
+                fixLinks()
             })
 
             editor.value.chain().focus().setFontFamily('Roboto').insertContent("nut").clearContent().run()
@@ -182,6 +196,10 @@
             }, 1000)
 
             editor.value.setEditable(props.editable)
+
+            setTimeout(() => {
+                fixLinks()
+            }, 250)
         }
     })
 
@@ -189,13 +207,44 @@
         //let content = editor.value?.getJSON() as JSONContent
         //editor.value?.chain().focus().clearContent().insertContent('nut').selectAll().unsetColor().clearContent().setContent(content).run()
     }
+
+    const fixLinks = () => {
+        let editorLinks = document.getElementsByClassName('editorLinkSelector')
+        for (let link of editorLinks) {
+            let anchor = link as HTMLAnchorElement      
+
+            if (
+                anchor.href.startsWith('https://mimo-eight.vercel.app') ||
+                anchor.href.startsWith('http://localhost:3000') ||
+                anchor.href.startsWith('https://mimowrite.blog') ||
+                anchor.href.startsWith('https://www.mimowrite.blog')
+            ) {
+                while (anchor.target !== '_self') {
+                    anchor.target = '_self'
+
+                    console.log("trying internal")
+                }
+            } else {
+                while (anchor.target !== '_blank') {
+                    anchor.target = '_blank'
+
+                    console.log("trying external")
+                }
+            }
+
+            console.log(anchor.href)
+            
+            if (anchor.title !== anchor.href)
+                anchor.title = anchor.href
+        }
+    }
 </script>
 
 <template>
-    <floating-menu :editor="editor" v-if="editor">
+    <floating-menu :editor="editor" v-if="editor && floatingMenu">
         <MimoFloatingMenu :editor="editor" textColor="black" :aiEnabled="aiEnabled"/>
     </floating-menu>
-    <bubble-menu :editor="editor" v-if="editor">
+    <bubble-menu :editor="editor" v-if="editor && floatingMenu">
         <MimoFloatingMenu :editor="editor" textColor="black" :aiEnabled="aiEnabled"/>
     </bubble-menu>
     <editor-content :editor="editor" contenteditable="false"/>

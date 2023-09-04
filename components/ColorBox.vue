@@ -6,6 +6,10 @@
             type: String,
             default: "#000000"
         },
+        title: {
+            type: String,
+            default: ""
+        }
     })
 
     let color = ref(props.color ? props.color : "#000000")
@@ -19,7 +23,7 @@
 </script>
 
 <template>
-    <div class="colorBox" :title="color"/>
+    <div class="colorBox" :title="title === '' ? color : title"/>
 </template>
 
 <style lang="sass" scoped>

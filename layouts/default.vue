@@ -106,6 +106,28 @@
 
             option
                 background-color: #fff
+
+    .loadingPopupWrapper
+        position: fixed
+        top: 0
+        left: 0
+        bottom: 0
+        right: 0
+        z-index: 999
+        background-color: rgba(0, 0, 0, 1)
+        display: flex
+        align-items: center
+        justify-content: center
+
+    .loadingPopup
+        position: sticky
+        top: 0
+        left: 0
+        bottom: 0
+        right: 0
+        z-index: 999
+        width: 350px
+        height: 350px
 </style>
 
 <style lang="scss">

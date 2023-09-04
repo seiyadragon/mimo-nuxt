@@ -40,7 +40,7 @@
         props.editor.on('selectionUpdate', () => {
             updateDisplayedHeadingLevel()
         })
-
+        
         toggleTextAlign("left")
     })
 
@@ -156,6 +156,7 @@
                 }
 
                 toggleLink(urlSectionUrl.value)
+
                 urlSectionUrl.value = ""
             }
         } else {

@@ -22,8 +22,12 @@
     onMounted( async () => {
         editorShouldDisplay.value = `
             <h1>Introducing MIMO: Unleash Your Creativity and Productivity! 🚀📝</h1>
+            <br>
+            <br>
             <p>Imagine a world where your ideas seamlessly transform into stunning documents. With MIMO, the ultimate online text editor, you're not just creating content – you're crafting experiences. Harness the power of cutting-edge AI assistance, effortlessly convert images into text, and seamlessly integrate YouTube videos to amplify your narratives. Your work stays in sync across all devices, and with dynamic checklists, code highlighting, and full Grammarly extension support, you'll conquer writing with finesse. Whether it's dazzling light or enigmatic dark themes, MIMO adapts to your style. And when it's time to share, export to .doc files for flawless collaboration. Elevate your creativity, conquer your to-dos, and compose brilliance with MIMO!</p>
-            <p><strong>Get started today and revolutionize your workflow.</strong></p>
+            <br>
+            <br>
+            <h1><strong>Get started today and <em><a href='/dashboard'>revolutionize</a></em> your workflow.</strong></h1>
         `
 
         displayAbout()
@@ -49,7 +53,7 @@
         <HeroImage src="/MIMO_HERO.png" alt="MIMO HERO"/>
         <Panel class="mainPanel">
             <Container class="container">
-                <MimoEditor :content="editorContent" placeholder="Feel free to try MIMO out!" content-animated :editable="!editorDisabled"/>
+                <MimoEditor :content="editorContent" placeholder="Feel free to try MIMO out!" content-animated :editable="!editorDisabled" :floatingMenu="false"/>
             </Container>
         </Panel>
     </div>
