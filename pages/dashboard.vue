@@ -262,7 +262,7 @@
         ]
     })
 
-    const share = async () => {
+    const share = async (showOwnly?: boolean) => {
         const pageData = pageList.value.find((page) => page.pageID === pageID.value)
 
         if (pageData) {
@@ -273,7 +273,8 @@
             } else if (pageData.sharePage == false) {
                 pageData.sharePage = true
             } else if (pageData.sharePage == true) {
-                pageData.sharePage = false
+                if (!showOwnly)
+                    pageData.sharePage = false
             }
 
             sharePage.value = pageData.sharePage
@@ -327,12 +328,12 @@
                         <button title="Remove Page" @click="deletePage" class="borderlessButton">
                             <Icon name="material-symbols:delete" size="20px"/>
                         </button>
-                        <div v-if="sharePage" title="Shared" class="colorMarkerActive"/>
-                        <div v-else title="Not Shared" class="colorMarker"/>
+                        <button v-if="sharePage" title="Shared" class="colorMarkerActive" @click="() => share(false)"/>
+                        <button v-else title="Not Shared" class="colorMarker" @click="() => share(false)"/>
                     </div>
                 </div>
                 <div class="dashMenu">
-                    <button title="Share" @click="share" class="borderlessButton">
+                    <button title="Share" @click="() => share(true)" class="borderlessButton">
                         <Icon name="material-symbols:share" size="20px"/>
                     </button>
                     <button title="Export" @click="print" class="borderlessButton">

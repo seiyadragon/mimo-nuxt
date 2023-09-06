@@ -14,10 +14,12 @@
     onMounted(() => {
         darkie.value = props.darkmode 
 
-        if (localStorage.getItem('darkmode') === 'true') {
-            darkie.value = true
-            image.value?.classList.add('darkmodeImage')
-        }
+        setTimeout(() => {
+            if (localStorage.getItem('darkmode') === 'true') {
+                darkie.value = true
+                image.value?.classList.add('darkmodeImage')
+            }
+        }, 100)
     })
 
     watch(() => props.darkmode, () => {

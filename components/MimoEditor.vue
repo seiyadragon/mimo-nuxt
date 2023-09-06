@@ -123,9 +123,9 @@
                 HTMLAttributes: {
                     // Change rel to different value
                     // Allow search engines to follow links(remove nofollow)
-                    rel: 'noopener noreferrer nofollow',
+                    rel: 'noopener noreferrer',
                     // Remove target entirely so links open in current tab
-                    class: 'editorLinkSelector'
+                    class: 'editorLinkSelector',
                 },
             }), Image,
             GapCursor, Dropcursor, TextAlign.configure({
@@ -209,6 +209,8 @@
     }
 
     const fixLinks = () => {
+        console.log("fixing links")
+
         let editorLinks = document.getElementsByClassName('editorLinkSelector')
         for (let link of editorLinks) {
             let anchor = link as HTMLAnchorElement      
@@ -219,23 +221,18 @@
                 anchor.href.startsWith('https://mimowrite.blog') ||
                 anchor.href.startsWith('https://www.mimowrite.blog')
             ) {
-                while (anchor.target !== '_self') {
-                    anchor.target = '_self'
-
-                    console.log("trying internal")
-                }
+                console.log("inside link")
+                //make the link open in the same tab
+                anchor.target = '_self'
             } else {
-                while (anchor.target !== '_blank') {
-                    anchor.target = '_blank'
-
-                    console.log("trying external")
-                }
+                console.log("outside link")
+                //make the link open in a new tab
+                anchor.target = '_blank'
             }
-
-            console.log(anchor.href)
-            
+                
             if (anchor.title !== anchor.href)
                 anchor.title = anchor.href
+            
         }
     }
 </script>

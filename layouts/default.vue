@@ -16,6 +16,13 @@
     onMounted(() => {
         dm.value.showWidget()
         navbarDM.value = localStorage.getItem('darkmode') === 'true' ? true : false
+        
+        if (dm.value.isActivated())
+            navbarDM.value = true
+        else
+            navbarDM.value = false
+        
+        localStorage.setItem('darkmode', navbarDM.value.toString())
 
         let dmToggle = document.getElementsByClassName('darkmode-toggle')[0]
         dmToggle.addEventListener('click', () => {
