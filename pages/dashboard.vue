@@ -266,7 +266,7 @@
         const pageData = pageList.value.find((page) => page.pageID === pageID.value)
 
         if (pageData) {
-            const url = `https://mimo-eight.vercel.app/post/${pageData.pageID}`
+            const url = `https://mimowrite.blog/post/${pageData.pageID}`
 
             if (pageData.sharePage === undefined || pageData.sharePage === null) {
                 pageData.sharePage = false

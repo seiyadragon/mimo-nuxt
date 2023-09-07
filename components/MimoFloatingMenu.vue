@@ -1,6 +1,9 @@
 <script lang="ts" setup>
     import { Editor } from '@tiptap/vue-3';
     import { createWorker } from 'tesseract.js'
+    
+    //@ts-ignore
+    import { Database } from '../database.types'
 
     let props = defineProps({
         editor: {
@@ -28,6 +31,11 @@
     let imageTextSectionOpen = ref(false)
     let inputRef = ref<HTMLInputElement | null>(null)
 
+    let user = useSupabaseUser()
+    let supabase = useSupabaseClient<Database>()
+
+    let aiTokens = ref(0)
+
     const fonts = [
         "Montserrat",
         "Poiret One",
@@ -36,13 +44,27 @@
         "Open Sans"
     ]
 
-    onMounted(() => {
+    onMounted(async () => {
         props.editor.on('selectionUpdate', () => {
             updateDisplayedHeadingLevel()
         })
         
         toggleTextAlign("left")
+
+        getAiTokens()
     })
+
+    const getAiTokens = async () => {
+        if (user) {
+            let {data, error} = await supabase.from("UserData").select('aiTokens').eq('user_id', user.value.id).single()
+
+            if (error) {
+                console.log(error)
+            } else {
+                aiTokens.value = data?.aiTokens
+            }
+        }
+    }
 
     const setHeading = (level: string) => {
         if (level === "7") {
@@ -214,26 +236,19 @@
     }
 
     const getAiResponse = async (command: string, history?: string, _callback?: any) => {
-        let failCount = 0;
-
-        while (!aiResponses) {
-            try {
-                var aiResponses = await (await fetch(`/api/openai?message=${history} ${command}`, {
-                    method: "GET",
-                })).json();
-            } catch (e) {
-                console.log(e)
-
-                failCount++;
-            }
-
-            if (failCount >= 5) {
-                return "Error: Failed to connect to AI server."
-            }
+        try {
+            var aiResponses = await (await fetch(`/api/openai?message=${history} ${command}&userid=${user.value.id}`, {
+                method: "GET",
+            })).json();
+        } catch (e) {
+            console.log(e)
         }
 
         if (_callback)
             _callback(aiResponses[0].message.content);
+
+        if (!aiResponses)
+            aiResponses = { message: { content: "Error: No response from AI!" } }
 
         return aiResponses[0].message.content;
     }
@@ -266,8 +281,9 @@
         aiPromptLoading.value = true
         let aiResponse = await getAiResponse(command, props.editor.getText());
 
+        getAiTokens()
+
         setTimeout(() => {
-            
             if (props.editor) {
                 var response = formatText(aiResponse)
             } else {
@@ -366,6 +382,14 @@
             inputRef.value?.focus()
         }, 100)
     }
+
+    const insertDetails = () => {
+        if (props.editor.isActive('details')) {
+            props.editor.chain().focus().unsetDetails().run();
+        } else {
+            props.editor.chain().focus().setDetails().run();
+        }
+    }
 </script>
 
 <template>
@@ -458,6 +482,9 @@
             <button title="Table" :class="editor.isActive('table') ? 'floatingMenuButtonActive' : 'floatingMenuButton'" @click="insertTable">
                 <Icon name="material-symbols:data-table" class="regularIcon"/>
             </button>
+            <button title="Details" :class="editor.isActive('details') ? 'floatingMenuButtonActive' : 'floatingMenuButton'" @click="insertDetails">
+                <Icon name="material-symbols:account-tree" class="regularIcon"/>
+            </button>
             <button title="Ai"  v-if="aiEnabled" :class="aiSectionOpen ? 'floatingMenuButtonActive' : 'floatingMenuButton'" @click="toggleAiSection">
                 <Icon name="material-symbols:network-intelligence" class="regularIcon"/>
             </button>
@@ -513,6 +540,10 @@
             <MimoMenuTextInput title="Video" v-model="urlSectionUrl" @submit="toggleYoutubeSection"/>
         </div>
         <div class="floatingMenuSection" v-if="aiSectionOpen">
+            <span v-if="user" class="aiTokens" style="display: flex; justify-content: space-between; align-items: center;">
+                <Icon name="material-symbols:generating-tokens" size="24px"/>
+                {{ aiTokens }}
+            </span>
             <MimoMenuTextInput title="Prompt" v-model="urlSectionUrl" @submit="toggleAiSection" :textarea="true" @load="onInputFileLoad"/>
             <button class="floatingMenuButton" title="Improve Writing" @click="fillAiPrompt('Improve writing')">
                 <Icon name="material-symbols:lightbulb" class="regularIcon"/>
@@ -651,4 +682,16 @@
 
     .loadingAnimation
         transform: scale(0.25, 0.25)
+
+    .aiTokens
+        color: white
+        font-family: 'Roboto', sans-serif
+        font-size: 1em
+        padding-top: 8px
+        padding-bottom: 8px
+        border: 1px solid #333
+        border-radius: 4px
+        width: 100%
+        padding-left: 4px
+        padding-right: 4px
 </style>

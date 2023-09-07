@@ -1135,6 +1135,30 @@
     "@supabase/storage-js" "^2.5.1"
     cross-fetch "^3.1.5"
 
+"@tiptap-pro/extension-details-content@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.tiptap.dev/@tiptap-pro%2fextension-details-content/-/extension-details-content-2.2.1.tgz#e70962f9ff5bbd617502871154b0f0781dad93f1"
+  integrity sha512-uoP2+bVcnsusJ2DINY0D1SAkT6QJFmjDhKcWJxklJK48x607jebABvUtRFHqATYcMTER8PQo4KKgKHgv+4ro3w==
+
+"@tiptap-pro/extension-details-summary@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.tiptap.dev/@tiptap-pro%2fextension-details-summary/-/extension-details-summary-2.2.1.tgz#cc1e9025ad1b2728a58911efa252de87ed83e3bc"
+  integrity sha512-vIFllWLRoHKtaQIzBSOf8cowHd0SbMSMH60mOXnb+gSHjgo0HB4HDKWAUm5YQnlbGDb5aJsERmrcKGqVk4qEdQ==
+
+"@tiptap-pro/extension-details@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.tiptap.dev/@tiptap-pro%2fextension-details/-/extension-details-2.2.1.tgz#bad991a4b9b057534b6138341dd3c506cdda48ec"
+  integrity sha512-pRqQ6FXpMDCvirfOKUiiRw/RIf7xhZUbZYxXk8YeiQDpyT2AqyU0Mi21cCtt73GyBUg1pRMvTY4nYyCtle0cQg==
+
+"@tiptap-pro/extension-emoji@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.tiptap.dev/@tiptap-pro%2fextension-emoji/-/extension-emoji-2.2.1.tgz#5b1d7ad522ac1b490a74c63bfdd0899214e11473"
+  integrity sha512-S6NmRJ3anzn8QTqfpDaYvnQwGb6so+k0yXshCciOR7ivlb8Uj3QZuB8Tx31XDwmbc5a4pr+9rBVZbDTwgEUM6Q==
+  dependencies:
+    emoji-regex "^10.0.0"
+    emojibase-data "^7.0.1"
+    is-emoji-supported "^0.0.5"
+
 "@tiptap/core@^2.0.4":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@tiptap/core/-/core-2.0.4.tgz#0a2047150ae537e75f96841a603699526f7b4ec5"
@@ -1399,6 +1423,11 @@
     "@tiptap/extension-paragraph" "^2.0.4"
     "@tiptap/extension-strike" "^2.0.4"
     "@tiptap/extension-text" "^2.0.4"
+
+"@tiptap/suggestion@^2.1.8":
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/@tiptap/suggestion/-/suggestion-2.1.8.tgz#ffd61c13aa11c4b51e50a9c83f0813f71ab0881b"
+  integrity sha512-3QypKFCeZSRrjgSz0n0JE5SimisolaxDZn45GGtkXuJWmKGCmsJw9UsXeH3S9ZuP3pvPImL0P9uAHlhRReRw1w==
 
 "@tiptap/vue-3@^2.0.4":
   version "2.0.4"
@@ -3041,6 +3070,11 @@ electron-to-chromium@^1.4.477:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.485.tgz#fde3ee9ee8112a3414c0dfa545385ad08ec43408"
   integrity sha512-1ndQ5IBNEnFirPwvyud69GHL+31FkE09gH/CJ6m3KCbkx3i0EVOrjwz4UNxRmN9H8OVHbC6vMRZGN1yCvjSs9w==
 
+emoji-regex@^10.0.0:
+  version "10.2.1"
+  resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-10.2.1.tgz#a41c330d957191efd3d9dfe6e1e8e1e9ab048b3f"
+  integrity sha512-97g6QgOk8zlDRdgq1WxwgTMgEWGVAQvB5Fdpgc1MkNy56la5SKP9GsMXKDOdqwn90/41a8yPwIGk1Y6WVbeMQA==
+
 emoji-regex@^8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-8.0.0.tgz#e818fd69ce5ccfcb404594f842963bf53164cc37"
@@ -3050,6 +3084,11 @@ emoji-regex@^9.2.2:
   version "9.2.2"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-9.2.2.tgz#840c8803b0d8047f4ff0cf963176b32d4ef3ed72"
   integrity sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==
+
+emojibase-data@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/emojibase-data/-/emojibase-data-7.0.1.tgz#a81d7fcd12247f7d94a96dcbdb143e6b6dd5c328"
+  integrity sha512-BLZpOdwyFpZ7lzBWyDtnxmKVm/SJMYgAfp1if3o6n1TVUMSXAf0nikONXl90LZuJ/m3XWPBkkubgCet2BsCGGQ==
 
 encodeurl@~1.0.2:
   version "1.0.2"
@@ -4143,6 +4182,11 @@ is-electron@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/is-electron/-/is-electron-2.2.2.tgz#3778902a2044d76de98036f5dc58089ac4d80bb9"
   integrity sha512-FO/Rhvz5tuw4MCWkpMzHFKWD2LsfHzIb7i6MdPYZ/KW7AlxawyLkqdy+jPZP1WubqEADE3O4FUENlJHDfQASRg==
+
+is-emoji-supported@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/is-emoji-supported/-/is-emoji-supported-0.0.5.tgz#f22301b22c63d6322935e829f39dfa59d03a7fe2"
+  integrity sha512-WOlXUhDDHxYqcSmFZis+xWhhqXiK2SU0iYiqmth5Ip0FHLZQAt9rKL5ahnilE8/86WH8tZ3bmNNNC+bTzamqlw==
 
 is-extendable@^1.0.0:
   version "1.0.1"

@@ -24,6 +24,10 @@
     import TableCell from '@tiptap/extension-table-cell'
     import Youtube from '@tiptap/extension-youtube';
     import HardBreak from '@tiptap/extension-hard-break';
+    import Details from '@tiptap-pro/extension-details';
+    import DetailsSummary from '@tiptap-pro/extension-details-summary';
+    import DetailsContent from '@tiptap-pro/extension-details-content';
+    import Emoji, { gitHubEmojis } from '@tiptap-pro/extension-emoji'
 
     import {lowlight} from 'lowlight';
     import css from 'highlight.js/lib/languages/css'
@@ -134,7 +138,14 @@
                 resizable: true,
                 allowTableNodeSelection: true,
             }), TableCell, TableRow, TableHeader, Youtube,
-            HardBreak,
+            HardBreak, Details.configure({
+                HTMLAttributes: {
+                    class: 'details',
+                },
+            }), DetailsSummary, DetailsContent, Emoji.configure({
+                emojis: gitHubEmojis,
+                enableEmoticons: true,
+            })
         ],
         editorProps: {
             attributes: {
@@ -327,6 +338,37 @@
 
     .darkmode--activated .tiptap .ProseMirror-gapcursor:after
         border-top: 1px solid #fff
+
+    .tiptap .details
+        display: flex
+        margin: 1rem 0
+        border: 1px solid black
+        border-radius: 0.5rem
+        padding: 0.5rem
+
+        > button
+            display: flex
+            cursor: pointer
+            background: transparent
+            border: none
+            padding: 0
+
+            &::before
+                content: '\25B6'
+                display: flex
+                justify-content: center
+                align-items: center
+                width: 1.5em
+                height: 1.5em
+
+        &.is-open > button::before
+            content: '\25BC'
+
+            > div
+                flex: 1 1 auto
+
+    .darkmode--activated .tiptap .details
+        border: 1px solid white
   
 </style>
 
