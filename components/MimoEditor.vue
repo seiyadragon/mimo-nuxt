@@ -138,7 +138,11 @@
                 resizable: true,
                 allowTableNodeSelection: true,
             }), TableCell, TableRow, TableHeader, Youtube,
-            HardBreak, Details, DetailsSummary, DetailsContent, Emoji.configure({
+            HardBreak, Details.configure({
+                HTMLAttributes: {
+                    class: 'details',
+                },
+            }), DetailsSummary, DetailsContent, Emoji.configure({
                 emojis: gitHubEmojis,
                 enableEmoticons: true,
             })
