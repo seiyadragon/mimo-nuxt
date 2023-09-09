@@ -384,11 +384,11 @@
     }
 
     const insertDetails = () => {
-        /*if (props.editor.isActive('details')) {
+        if (props.editor.isActive('details')) {
             props.editor.chain().focus().unsetDetails().run();
         } else {
             props.editor.chain().focus().setDetails().run();
-        }*/
+        }
     }
 </script>
 
@@ -482,9 +482,9 @@
             <button title="Table" :class="editor.isActive('table') ? 'floatingMenuButtonActive' : 'floatingMenuButton'" @click="insertTable">
                 <Icon name="material-symbols:data-table" class="regularIcon"/>
             </button>
-            <!--button title="Details" :class="editor.isActive('details') ? 'floatingMenuButtonActive' : 'floatingMenuButton'" @click="insertDetails">
+            <button title="Details" :class="editor.isActive('details') ? 'floatingMenuButtonActive' : 'floatingMenuButton'" @click="insertDetails">
                 <Icon name="material-symbols:account-tree" class="regularIcon"/>
-            </button-->
+            </button>
             <button title="Ai"  v-if="aiEnabled" :class="aiSectionOpen ? 'floatingMenuButtonActive' : 'floatingMenuButton'" @click="toggleAiSection">
                 <Icon name="material-symbols:network-intelligence" class="regularIcon"/>
             </button>
