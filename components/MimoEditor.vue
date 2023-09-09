@@ -157,6 +157,8 @@
     })
 
     onMounted(() => {
+        console.log(Details)
+
         if (editor.value) {
             editor.value.on('update', () => {
                 emit('update:content', editor.value?.getHTML())
