@@ -138,7 +138,16 @@
                 resizable: true,
                 allowTableNodeSelection: true,
             }), TableCell, TableRow, TableHeader, Youtube,
-            HardBreak,
+            HardBreak, Details.configure({
+                HTMLAttributes: {
+                    class: 'details',
+                },
+            }), DetailsSummary, DetailsContent, Emoji.configure({
+                HTMLAttributes: {
+                    class: 'emoji',
+                },
+                emojis: gitHubEmojis,
+            }),
         ],
         editorProps: {
             attributes: {
@@ -157,8 +166,6 @@
     })
 
     onMounted(() => {
-        console.log(Details)
-
         if (editor.value) {
             editor.value.on('update', () => {
                 emit('update:content', editor.value?.getHTML())
