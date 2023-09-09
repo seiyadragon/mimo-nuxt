@@ -113,7 +113,7 @@
         }
     })
 
-    const editor = useEditor({
+    let editor = useEditor({
         content: props.content,
         extensions: [
             StarterKit, Highlight, Underline, 
@@ -138,16 +138,7 @@
                 resizable: true,
                 allowTableNodeSelection: true,
             }), TableCell, TableRow, TableHeader, Youtube,
-            HardBreak, Details.configure({
-                HTMLAttributes: {
-                    class: 'details',
-                },
-            }), DetailsSummary, DetailsContent, Emoji.configure({
-                HTMLAttributes: {
-                    class: 'emoji',
-                },
-                emojis: gitHubEmojis,
-            }),
+            HardBreak,
         ],
         editorProps: {
             attributes: {
@@ -166,6 +157,53 @@
     })
 
     onMounted(() => {
+        console.log(Details)
+
+        if (Details && DetailsContent && DetailsSummary && Emoji) {
+            editor = useEditor({
+                content: props.content,
+                extensions: [
+                    StarterKit, Highlight, Underline, 
+                    TextStyle, Color, Placeholder.configure({
+                    placeholder: props.placeholder,
+                    }), 
+                    Typography, FontFamily, CodeBlockLowlight.configure({
+                    lowlight,
+                    }),
+                    Subscript, Superscript, TaskList, TaskItem, Link.configure({
+                        HTMLAttributes: {
+                            // Change rel to different value
+                            // Allow search engines to follow links(remove nofollow)
+                            rel: 'noopener noreferrer',
+                            // Remove target entirely so links open in current tab
+                            class: 'editorLinkSelector',
+                        },
+                    }), Image,
+                    GapCursor, Dropcursor, TextAlign.configure({
+                    types: ['heading', 'paragraph', 'textStyle', 'link'],
+                    }), Table.configure({
+                        resizable: true,
+                        allowTableNodeSelection: true,
+                    }), TableCell, TableRow, TableHeader, Youtube,
+                    HardBreak, Details.configure({
+                        HTMLAttributes: {
+                            class: 'details',
+                        },
+                    }), DetailsSummary, DetailsContent, Emoji.configure({
+                        HTMLAttributes: {
+                            class: 'emoji',
+                        },
+                        emojis: gitHubEmojis,
+                    }),
+                ],
+                editorProps: {
+                    attributes: {
+                    class: `tiptap`,
+                    },
+                },
+            })
+        }
+
         if (editor.value) {
             editor.value.on('update', () => {
                 emit('update:content', editor.value?.getHTML())
