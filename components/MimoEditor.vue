@@ -24,10 +24,6 @@
     import TableCell from '@tiptap/extension-table-cell'
     import Youtube from '@tiptap/extension-youtube';
     import HardBreak from '@tiptap/extension-hard-break';
-    import Details from '@tiptap-pro/extension-details';
-    import DetailsSummary from '@tiptap-pro/extension-details-summary';
-    import DetailsContent from '@tiptap-pro/extension-details-content';
-    import Emoji, { gitHubEmojis } from '@tiptap-pro/extension-emoji'
 
     import {lowlight} from 'lowlight';
     import css from 'highlight.js/lib/languages/css'
@@ -138,14 +134,7 @@
                 resizable: true,
                 allowTableNodeSelection: true,
             }), TableCell, TableRow, TableHeader, Youtube,
-            HardBreak, Details.configure({
-                HTMLAttributes: {
-                    class: 'details',
-                },
-            }), DetailsSummary, DetailsContent, Emoji.configure({
-                emojis: gitHubEmojis,
-                enableEmoticons: true,
-            })
+            HardBreak
         ],
         editorProps: {
             attributes: {
