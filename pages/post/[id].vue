@@ -44,7 +44,7 @@
     })
 
     useHead({
-        title: pageData.value?.title || 'MIMO - The Ultimate Online Text Editor',
+        title: pageData.value?.title,
         meta: [
             {
                 name: 'description',
